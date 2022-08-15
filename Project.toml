@@ -1,0 +1,4 @@
+name = "StorageDispatch"
+uuid = "09dcf828-d3cc-48c4-8ac1-59579bdd0383"
+authors = ["Gord Stephen <gords@uw.edu>"]
+version = "0.1.0"
