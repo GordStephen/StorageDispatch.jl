@@ -4,6 +4,13 @@ Basic representation of a storage device
 struct StorageUnit
     capacity::Float64 # MW
     energy::Float64 # MWh
+
+    function StorageUnit(capacity::Float64, energy::Float64)
+        capacity > 0 || error("Capacity must be positive")
+        energy > 0 || error("Capacity must be positive")
+        return new(capacity, energy)
+    end
+
 end
 
 """
@@ -24,10 +31,10 @@ isapprox(x::StorageUnitState, y::StorageUnitState; kwargs...) =
     isapprox(x.t_remaining, y.t_remaining; kwargs...)
 
 isdischargeable(unit::StorageUnitState) =
-    (unit.ttg > 0) && (unit.t_remaining > 0)
+    (unit.ttg > epsilon) && (unit.t_remaining > epsilon)
 
 ischargeable(unit::StorageUnitState) =
-    (unit.ttg < unit.ttg_max) && (unit.t_remaining > 0)
+    (unit.ttg < unit.ttg_max) && (unit.t_remaining > epsilon)
 
 StorageUnitState(unit::StorageUnit) = StorageUnitState(
     unit.capacity, unit.energy/unit.capacity, 0.0, 1.0

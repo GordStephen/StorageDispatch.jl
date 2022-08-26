@@ -1,4 +1,4 @@
-function charge!(x::StorageFleetState, surplus::Float64; eps=eps())
+function charge!(x::StorageFleetState, surplus::Float64; eps=epsilon)
 
     while surplus > eps
 
@@ -11,6 +11,7 @@ function charge!(x::StorageFleetState, surplus::Float64; eps=eps())
 
             # Can add floating point error checks here if needed
             stor = x.units[i]
+
             stor.ttg += t
             stor.t_remaining -= t
 
@@ -29,8 +30,9 @@ function group_charge(stors::Vector{StorageUnitState},
                       surplus::Float64)
 
     first_idx = first(storset)
-
+    first_stor = stors[first_idx]
     last_stor = stors[last(storset)]
+
     next_set_t = last_stor.ttg_max - last_stor.ttg
 
     set_p = 0
@@ -46,7 +48,7 @@ function group_charge(stors::Vector{StorageUnitState},
 
     if first_idx != 1
         prev_stor = stors[first_idx-1]
-        next_set_t = min(next_set_t, prev_stor.ttg_max - prev_stor.ttg)
+        next_set_t = min(next_set_t, prev_stor.ttg - first_stor.ttg)
     end
 
     return min(min_remaining_t, eliminate_surplus_t, next_set_t)

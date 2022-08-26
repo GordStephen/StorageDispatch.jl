@@ -1,4 +1,4 @@
-function discharge!(x::StorageFleetState, shortfall::Float64; eps=eps())
+function discharge!(x::StorageFleetState, shortfall::Float64; eps=epsilon)
 
     while shortfall > eps
 
@@ -11,6 +11,7 @@ function discharge!(x::StorageFleetState, shortfall::Float64; eps=eps())
 
             # Can add floating point error checks here if needed
             stor = x.units[i]
+
             stor.ttg -= t
             stor.t_remaining -= t
 
@@ -46,7 +47,7 @@ function group_discharge(stors::Vector{StorageUnitState},
         next_set_t -= stors[last_idx+1].ttg
     end
 
-    return min(min_remaining_t, eliminate_shortfall_t, next_set_t)
+    return max(min(min_remaining_t, eliminate_shortfall_t, next_set_t), 0.)
 
 end
 
