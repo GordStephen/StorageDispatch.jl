@@ -1,8 +1,10 @@
 const optimizer = optimizer_with_attributes(OSQP.Optimizer,
     "verbose" => false, "polish" => true, "polish_refine_iter" => 20,
-    "eps_rel" => 1e-6, "eps_abs" => 1e-6,
-    "eps_prim_inf" => 1e-6, "eps_dual_inf" => 1e-6
+    "eps_rel" => 1e-7, "eps_abs" => 1e-7,
+    "eps_prim_inf" => 1e-7, "eps_dual_inf" => 1e-7
 )
+
+# TODO: Save time by not recreating the model every timestep?
 
 function charge_qp!(x::StorageFleetState, surplus::Float64)
 

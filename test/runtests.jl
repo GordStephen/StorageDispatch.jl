@@ -9,8 +9,8 @@ const test_qp = true
 const use_qp = true
 const n_random_replications = 100
 
-const atol = 6e-5
-const rtol = 2e-4
+const atol = 1e-3
+const rtol = 1e-3
 
 include("utils.jl")
 include("qp.jl")
@@ -36,5 +36,7 @@ include("dispatch.jl")
     use_qp && discharge_compare(discharge!, discharge_qp!, atol=atol, rtol=rtol)
 
     dispatch_test()
+    use_qp && dispatch_compare(charge!, charge_qp!, discharge!, discharge_qp!,
+                               atol=atol, rtol=rtol)
 
 end
